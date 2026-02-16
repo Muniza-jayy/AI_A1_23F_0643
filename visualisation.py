@@ -4,7 +4,7 @@ from grid import ROWS, COLS, start, target
 
 def draw_grid(grid, frontier=set(), explored=set(), path=set(), algo=""):
     plt.clf()
-    plt.title("BFS")
+    plt.title("The Visualization of Algorithms")
 
     display = np.where(grid == -1, 1, 0)
     plt.imshow(display, interpolation="none")
