@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
-from grid import create_grid
+from grid import create_grid_worst as create_grid
+
 
 from bfs import bfs
 from dfs import dfs
@@ -28,6 +29,8 @@ def run_algorithm(name, function, *args):
     print("Path:", path)
 
     plt.show()
+
+
 
 
 if __name__ == "__main__":
