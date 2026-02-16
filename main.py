@@ -5,13 +5,15 @@ from dfs import dfs
 from ucs import ucs
 from dls import dls
 from iddfs import iddfs
+from bidirectional import bidirectional_bfs
 
-# if __name__ == "__main__":
-#     grid = create_grid()
-#     plt.figure(figsize=(8,5))
-#     path = bfs(grid)
-#     print("Path:", path)
-#     plt.show()
+
+if __name__ == "__main__":
+    grid = create_grid()
+    plt.figure(figsize=(8,5))
+    path = bfs(grid)
+    print("Path:", path)
+    plt.show()
 
 # if __name__ == "__main__":
 #     grid = create_grid()
@@ -45,16 +47,26 @@ from iddfs import iddfs
 #     plt.show()
 
 
+# if __name__ == "__main__":
+#     grid = create_grid()
+#     plt.figure(figsize=(8,5))
+
+#     max_depth = 20
+#     path, found_limit = iddfs(grid, max_depth)
+
+#     print("Max Depth:", max_depth)
+#     print("Found at Depth Limit:", found_limit)
+#     print("Path length:", len(path))
+#     print("Path:", path)
+
+#     plt.show()
+
 if __name__ == "__main__":
     grid = create_grid()
     plt.figure(figsize=(8,5))
 
-    max_depth = 20
-    path, found_limit = iddfs(grid, max_depth)
+    path = bidirectional_bfs(grid)
 
-    print("Max Depth:", max_depth)
-    print("Found at Depth Limit:", found_limit)
     print("Path length:", len(path))
     print("Path:", path)
-
     plt.show()
