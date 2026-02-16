@@ -8,7 +8,7 @@ The GUI visualizes the search process step-by-step to clearly show how each algo
 
 ---
 
-## 📌 Implemented Algorithms
+## Implemented Algorithms
 
 The following search strategies are implemented:
 
