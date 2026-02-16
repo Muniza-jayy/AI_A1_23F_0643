@@ -2,6 +2,7 @@ from collections import deque
 from grid import start, target, get_neighbors
 from visualisation import draw_grid
 
+
 def reconstruct_path(parent):
     cur = target
     path = [cur]
@@ -11,22 +12,34 @@ def reconstruct_path(parent):
     path.reverse()
     return path
 
+
 def bfs(grid):
     q = deque([start])
     parent = {}
     explored = set()
     frontier = set([start])
 
+    expansion_order = {}
+    step_count = 1
+
     while q:
         current = q.popleft()
         frontier.discard(current)
-        explored.add(current)
 
-        draw_grid(grid, frontier, explored, set(), "BFS")
+        if current in explored:
+            continue
+
+        explored.add(current)
+        expansion_order[current] = step_count
+        step_count += 1
+
+        draw_grid(grid, frontier, explored, set(),
+                  "BFS", expansion_order)
 
         if current == target:
             path = reconstruct_path(parent)
-            draw_grid(grid, set(), explored, set(path), "BFS")
+            draw_grid(grid, set(), explored,
+                      set(path), "BFS", expansion_order)
             return path
 
         for nb in get_neighbors(current, grid):

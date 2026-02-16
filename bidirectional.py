@@ -2,84 +2,101 @@ from collections import deque
 from grid import start, target, get_neighbors
 from visualisation import draw_grid
 
-def reconstruct_path_bidirectional(parent_s, parent_t, meeting):
-    # Path from start -> meeting
-    path_s = []
-    cur = meeting
-    while cur != start:
-        path_s.append(cur)
-        cur = parent_s[cur]
-    path_s.append(start)
-    path_s.reverse()
 
-    # Path from meeting -> target (using parents from target side)
-    path_t = []
-    cur = meeting
-    while cur != target:
-        cur = parent_t[cur]
-        path_t.append(cur)
+def reconstruct_path(meet_node, parent_start, parent_goal):
+    path = []
 
-    return path_s + path_t
+    # From start to meeting point
+    node = meet_node
+    while node:
+        path.append(node)
+        node = parent_start.get(node)
 
-def bidirectional_bfs(grid):
-    if start == target:
-        return [start]
+    path.reverse()
 
-    # BFS from start
-    q_s = deque([start])
-    parent_s = {}
-    visited_s = {start}
-    frontier_s = {start}
+    # From meeting point to target
+    node = parent_goal.get(meet_node)
+    while node:
+        path.append(node)
+        node = parent_goal.get(node)
 
-    # BFS from target
-    q_t = deque([target])
-    parent_t = {}
-    visited_t = {target}
-    frontier_t = {target}
+    return path
 
-    explored = set()
 
-    while q_s and q_t:
-        # ---- Expand one step from Start side ----
-        current_s = q_s.popleft()
-        frontier_s.discard(current_s)
-        explored.add(current_s)
+def bidirectional(grid):
 
-        draw_grid(grid, frontier=frontier_s | frontier_t, explored=explored, path=set(),
-                  algo="Bidirectional (from S & T)")
+    q_start = deque([start])
+    q_goal = deque([target])
 
-        for nb in get_neighbors(current_s, grid):  # strict order
-            if nb not in visited_s:
-                visited_s.add(nb)
-                parent_s[nb] = current_s
-                q_s.append(nb)
-                frontier_s.add(nb)
+    parent_start = {start: None}
+    parent_goal = {target: None}
 
-                # meet check
-                if nb in visited_t:
-                    path = reconstruct_path_bidirectional(parent_s, parent_t, nb)
-                    draw_grid(grid, frontier=set(), explored=explored, path=set(path), algo="Bidirectional")
-                    return path
+    explored_start = set()
+    explored_goal = set()
 
-        # ---- Expand one step from Target side ----
-        current_t = q_t.popleft()
-        frontier_t.discard(current_t)
-        explored.add(current_t)
+    frontier_start = {start}
+    frontier_goal = {target}
 
-        draw_grid(grid, frontier=frontier_s | frontier_t, explored=explored, path=set(),
-                  algo="Bidirectional (from S & T)")
+    expansion_order = {}
+    step_count = 1
 
-        for nb in get_neighbors(current_t, grid):  # strict order
-            if nb not in visited_t:
-                visited_t.add(nb)
-                parent_t[nb] = current_t
-                q_t.append(nb)
-                frontier_t.add(nb)
+    while q_start and q_goal:
 
-                # meet check
-                if nb in visited_s:
-                    path = reconstruct_path_bidirectional(parent_s, parent_t, nb)
-                    draw_grid(grid, frontier=set(), explored=explored, path=set(path), algo="Bidirectional")
-                    return path
+        # Expand from start side
+        current_start = q_start.popleft()
+        frontier_start.discard(current_start)
+        explored_start.add(current_start)
+
+        expansion_order[current_start] = step_count
+        step_count += 1
+
+        if current_start in explored_goal:
+            path = reconstruct_path(current_start,
+                                    parent_start,
+                                    parent_goal)
+            draw_grid(grid, set(),
+                      explored_start | explored_goal,
+                      set(path),
+                      "Bidirectional",
+                      expansion_order)
+            return path
+
+        for nb in get_neighbors(current_start, grid):
+            if nb not in explored_start and nb not in frontier_start:
+                parent_start[nb] = current_start
+                q_start.append(nb)
+                frontier_start.add(nb)
+
+        # Expand from goal side
+        current_goal = q_goal.popleft()
+        frontier_goal.discard(current_goal)
+        explored_goal.add(current_goal)
+
+        expansion_order[current_goal] = step_count
+        step_count += 1
+
+        if current_goal in explored_start:
+            path = reconstruct_path(current_goal,
+                                    parent_start,
+                                    parent_goal)
+            draw_grid(grid, set(),
+                      explored_start | explored_goal,
+                      set(path),
+                      "Bidirectional",
+                      expansion_order)
+            return path
+
+        for nb in get_neighbors(current_goal, grid):
+            if nb not in explored_goal and nb not in frontier_goal:
+                parent_goal[nb] = current_goal
+                q_goal.append(nb)
+                frontier_goal.add(nb)
+
+        draw_grid(grid,
+                  frontier_start | frontier_goal,
+                  explored_start | explored_goal,
+                  set(),
+                  "Bidirectional",
+                  expansion_order)
 
     return []

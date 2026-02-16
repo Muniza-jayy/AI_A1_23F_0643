@@ -1,6 +1,7 @@
 from grid import start, target, get_neighbors
 from visualisation import draw_grid
 
+
 def reconstruct_path(parent):
     cur = target
     path = [cur]
@@ -10,29 +11,36 @@ def reconstruct_path(parent):
     path.reverse()
     return path
 
+
 def dfs(grid):
     stack = [start]
     parent = {}
     explored = set()
     frontier = set([start])
 
+    expansion_order = {}
+    step_count = 1
+
     while stack:
-        current = stack.pop()   # LIFO
+        current = stack.pop()
         frontier.discard(current)
 
         if current in explored:
             continue
-        explored.add(current)
 
-        draw_grid(grid, frontier, explored, set(), "DFS")
+        explored.add(current)
+        expansion_order[current] = step_count
+        step_count += 1
+
+        draw_grid(grid, frontier, explored, set(),
+                  "DFS", expansion_order)
 
         if current == target:
             path = reconstruct_path(parent)
-            draw_grid(grid, set(), explored, set(path), "DFS")
+            draw_grid(grid, set(), explored,
+                      set(path), "DFS", expansion_order)
             return path
 
-        # Strict order: for DFS, push neighbors in reverse
-        # so that when popped, they expand in your required order.
         neighbors = get_neighbors(current, grid)
         for nb in reversed(neighbors):
             if nb not in explored and nb not in frontier:

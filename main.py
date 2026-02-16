@@ -1,72 +1,53 @@
 import matplotlib.pyplot as plt
 from grid import create_grid
+
 from bfs import bfs
 from dfs import dfs
-from ucs import ucs
 from dls import dls
 from iddfs import iddfs
-from bidirectional import bidirectional_bfs
+from bidirectional import bidirectional
+from ucs import ucs 
+
+
+def run_algorithm(name, function, *args):
+    print("\n==============================")
+    print(f"Running Algorithm: {name}")
+    print("==============================")
+
+    grid = create_grid()
+    plt.figure(figsize=(8, 5))
+
+    result = function(grid, *args)
+
+    if isinstance(result, tuple):
+        path = result[0]
+    else:
+        path = result
+
+    print("Path Length:", len(path))
+    print("Path:", path)
+
+    plt.show()
 
 
 if __name__ == "__main__":
-    grid = create_grid()
-    plt.figure(figsize=(8,5))
-    path = bfs(grid)
-    print("Path:", path)
-    plt.show()
 
-# if __name__ == "__main__":
-#     grid = create_grid()
-#     plt.figure(figsize=(8,5))
-#     path = dfs(grid)
-#     print("Path:", path)
-#     plt.show()
+    # BFS
+    run_algorithm("Breadth First Search (BFS)", bfs)
+
+    # DFS
+    run_algorithm("Depth First Search (DFS)", dfs)
+
+    # DLS
+    run_algorithm("Depth Limited Search (DLS)", dls, 10)
+
+    # IDDFS
+    run_algorithm("Iterative Deepening DFS (IDDFS)", iddfs, 20)
     
-# import matplotlib.pyplot as plt
-# from grid import create_grid
-# from ucs import ucs
+    #UCS
+    run_algorithm("Uniform Cost Search (UCS)", ucs)
 
-# if __name__ == "__main__":
-#     grid = create_grid()
-#     plt.figure(figsize=(8,5))
-#     path = ucs(grid)
-#     print("Path length:", len(path))
-#     print("Path:", path)
-#     plt.show()
-
-# if __name__ == "__main__":
-#     grid = create_grid()
-#     plt.figure(figsize=(8,5))
-
-#     limit = 10  # you can change this for best/worst case screenshots
-#     path = dls(grid, limit)
-
-#     print("Depth Limit:", limit)
-#     print("Path length:", len(path))
-#     print("Path:", path)
-#     plt.show()
+    # Bidirectional
+    run_algorithm("Bidirectional Search", bidirectional)
 
 
-# if __name__ == "__main__":
-#     grid = create_grid()
-#     plt.figure(figsize=(8,5))
-
-#     max_depth = 20
-#     path, found_limit = iddfs(grid, max_depth)
-
-#     print("Max Depth:", max_depth)
-#     print("Found at Depth Limit:", found_limit)
-#     print("Path length:", len(path))
-#     print("Path:", path)
-
-#     plt.show()
-
-if __name__ == "__main__":
-    grid = create_grid()
-    plt.figure(figsize=(8,5))
-
-    path = bidirectional_bfs(grid)
-
-    print("Path length:", len(path))
-    print("Path:", path)
-    plt.show()
