@@ -2,7 +2,6 @@ import heapq
 from grid import start, target, get_neighbors
 from visualisation import draw_grid
 
-
 def reconstruct_path(parent):
     cur = target
     path = [cur]
@@ -12,17 +11,13 @@ def reconstruct_path(parent):
     path.reverse()
     return path
 
-
-def ucs(grid):
+def ucs(grid, should_stop=None):
     pq = []
     tie = 0
-
-    # (cost, tie_break, node)
     heapq.heappush(pq, (0, tie, start))
 
     parent = {}
     cost_so_far = {start: 0}
-
     explored = set()
     frontier = {start}
 
@@ -30,12 +25,13 @@ def ucs(grid):
     step_count = 1
 
     while pq:
+        if should_stop and should_stop():
+            return []
+
         current_cost, _, current = heapq.heappop(pq)
 
-        # Skip outdated pq entries
         if current_cost != cost_so_far.get(current, float("inf")):
             continue
-
         if current in explored:
             continue
 
@@ -53,15 +49,13 @@ def ucs(grid):
             return path
 
         for nb in get_neighbors(current, grid):
-            new_cost = current_cost + 1  # cost per move = 1
+            new_cost = current_cost + 1
 
-            # Relaxation step
             if nb not in cost_so_far or new_cost < cost_so_far[nb]:
                 cost_so_far[nb] = new_cost
                 parent[nb] = current
                 tie += 1
                 heapq.heappush(pq, (new_cost, tie, nb))
-
                 if nb not in explored:
                     frontier.add(nb)
 

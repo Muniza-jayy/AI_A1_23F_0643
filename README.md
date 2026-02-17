@@ -1,56 +1,58 @@
-# AI Pathfinder – Uninformed Search Visualization
-### GOOD PERFORMANCE TIME APP
 
-This project implements and visualizes six fundamental **Uninformed Search Algorithms** in a grid-based environment.
+# AI Pathfinder – Uninformed Search Visualization  
+## GOOD PERFORMANCE TIME APP
 
-The system demonstrates how each algorithm explores a grid from a **Start (S)** node to a **Target (T)** node while avoiding static obstacles (walls).  
-The GUI visualizes the search process step-by-step to clearly show how each algorithm "thinks".
+This project implements and visualizes six **Uninformed Search Algorithms** in a grid-based environment.
+
+The system shows how each algorithm explores a grid from a **Start (S)** node to a **Target (T)** node while avoiding **static obstacles (walls)**.  
+The GUI animates the search step-by-step to clearly display the frontier, explored nodes, and final path.
 
 ---
 
-## Implemented Algorithms
+##  Implemented Algorithms
 
-The following search strategies are implemented:
-
-- Breadth-First Search (BFS)
-- Depth-First Search (DFS)
-- Uniform-Cost Search (UCS)
-- Depth-Limited Search (DLS)
-- Iterative Deepening DFS (IDDFS)
-- Bidirectional Search
+- **Breadth-First Search (BFS)**
+- **Depth-First Search (DFS)**
+- **Uniform-Cost Search (UCS)** *(cost per action = 1)*
+- **Depth-Limited Search (DLS)**
+- **Iterative Deepening DFS (IDDFS)**
+- **Bidirectional Search**
 
 All algorithms:
 - Follow the required strict clockwise movement order (including diagonals).
-- Use cost per action = 1.
+- Use path cost = **1 per move**.
 - Animate exploration step-by-step.
-- Display expansion order numbers.
-- Highlight frontier nodes, explored nodes, and final path.
+- Show **expansion order numbering**.
+- Highlight **frontier**, **explored**, and **final path** cells.
 
 ---
 
-## 🖥️ GUI Features
+##  GUI Features
 
 The visualization includes:
 
-- Real-time step-by-step animation
-- Frontier nodes (yellow)
-- Explored nodes (light gray)
-- Final path (blue)
-- Start node (green)
-- Target node (blue)
-- Expansion order numbers displayed inside each visited cell
-- GUI title: **GOOD PERFORMANCE TIME APP**
+- Algorithm selection (radio buttons)
+- Scenario selection: **Default / Best / Worst**
+- Buttons: **Run / Reset / Exit**
+- Frontier nodes (**yellow**)
+- Explored nodes (**light gray**)
+- Final path (**blue**)
+- Start node (**green**) labeled **S**
+- Target node (**blue**) labeled **T**
+- Expansion order numbers shown inside visited cells  
+  *(numbers do not overwrite S/T)*
 
 Console output includes:
 - Algorithm name
+- Scenario name
 - Path length
 - Path sequence
 
----
 
-## 📂 Project Structure
+##  Project Structure
 
-AI_A1_23F-0643
+
+AI_A1_23F-0643/
 │
 ├── main.py
 ├── grid.py
@@ -63,31 +65,56 @@ AI_A1_23F-0643
 ├── bidirectional.py
 └── README.md
 
-## ⚙️ Requirements
 
-Make sure Python 3.8 or higher is installed.
 
-### Install Required Dependencies
+##  Requirements
 
-Run the following command in your terminal:
+- Python **3.8+**
+- Libraries:
+  - `matplotlib`
+  - `numpy`
 
-bash
+
+## 📦 Installation
+
+Run this in terminal:
+
 pip install matplotlib numpy
 
+## ▶️ How to Run
 
-### how to Run the project
- Navigate to the project directory in terminal:
+1. Open terminal and go to the project folder:
+
 cd AI_A1_23F-0643
-Run:
+
+
+2. Run the program:
+
+
 python main.py
 
-### Test Scenarios
 
-The project includes:
+3. In the GUI:
 
-Best-case grid scenario
+* Select an algorithm
+* Select a scenario (**Default / Best / Worst**)
+* Click **Run**
 
-Worst-case grid scenario
 
-These can be selected from grid.py to generate required screenshots for the report.
+##  Test Scenarios (Screenshots)
+
+The project supports three scenarios:
+
+* **Default**: original static wall layout
+* **Best**: narrow corridor (minimal branching)
+* **Worst**: mostly open grid (high branching)
+
+You can select scenarios directly from the GUI (radio buttons) to take screenshots for the report.
+
+
+
+## 📝 Notes
+
+* Movement order follows a clockwise order with diagonals enabled.
+* The project focuses on visualization and conceptual understanding of uninformed search strategies.
 

@@ -1,7 +1,6 @@
 from grid import start, target, get_neighbors
 from visualisation import draw_grid
 
-
 def reconstruct_path(parent):
     cur = target
     path = [cur]
@@ -11,8 +10,7 @@ def reconstruct_path(parent):
     path.reverse()
     return path
 
-
-def dls(grid, limit):
+def dls(grid, limit, should_stop=None):
     stack = [(start, 0)]
     parent = {}
     explored = set()
@@ -22,6 +20,9 @@ def dls(grid, limit):
     step_count = 1
 
     while stack:
+        if should_stop and should_stop():
+            return []
+
         current, depth = stack.pop()
         frontier.discard(current)
 
@@ -32,13 +33,11 @@ def dls(grid, limit):
         expansion_order[current] = step_count
         step_count += 1
 
-        draw_grid(grid, frontier, explored, set(),
-                  f"DLS (L={limit})", expansion_order)
+        draw_grid(grid, frontier, explored, set(), f"DLS (L={limit})", expansion_order)
 
         if current == target:
             path = reconstruct_path(parent)
-            draw_grid(grid, set(), explored,
-                      set(path), f"DLS (L={limit})", expansion_order)
+            draw_grid(grid, set(), explored, set(path), f"DLS (L={limit})", expansion_order)
             return path
 
         if depth == limit:

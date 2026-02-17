@@ -1,7 +1,6 @@
 from grid import start, target, get_neighbors
 from visualisation import draw_grid
 
-
 def reconstruct_path(parent):
     cur = target
     path = [cur]
@@ -11,8 +10,7 @@ def reconstruct_path(parent):
     path.reverse()
     return path
 
-
-def dfs(grid):
+def dfs(grid, should_stop=None):
     stack = [start]
     parent = {}
     explored = set()
@@ -22,6 +20,9 @@ def dfs(grid):
     step_count = 1
 
     while stack:
+        if should_stop and should_stop():
+            return []
+
         current = stack.pop()
         frontier.discard(current)
 
@@ -32,13 +33,11 @@ def dfs(grid):
         expansion_order[current] = step_count
         step_count += 1
 
-        draw_grid(grid, frontier, explored, set(),
-                  "DFS", expansion_order)
+        draw_grid(grid, frontier, explored, set(), "DFS", expansion_order)
 
         if current == target:
             path = reconstruct_path(parent)
-            draw_grid(grid, set(), explored,
-                      set(path), "DFS", expansion_order)
+            draw_grid(grid, set(), explored, set(path), "DFS", expansion_order)
             return path
 
         neighbors = get_neighbors(current, grid)
